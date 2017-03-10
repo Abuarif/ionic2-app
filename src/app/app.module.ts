@@ -13,7 +13,7 @@ import { PersonalStatsPage } from '../pages/personal-stats/personal-stats';
 import { GroupStatsPage } from '../pages/group-stats/group-stats';
 import { TabsPage } from '../pages/tabs/tabs';
 
-import { AppData } from '../providers/app-data';
+import { AppData, Profile, Account, ApiServer } from '../providers/app-data';
 import { ServerData } from '../providers/server-data';
 
 @NgModule({
@@ -28,6 +28,9 @@ import { ServerData } from '../providers/server-data';
     StatsPage,
     PersonalStatsPage,
     GroupStatsPage,
+    // Profile,
+    // Account, 
+    // ApiServer,
     TabsPage
   ],
   imports: [
@@ -46,11 +49,17 @@ import { ServerData } from '../providers/server-data';
     StatsPage,
     PersonalStatsPage,
     GroupStatsPage,
+    // Profile,
+    // Account, 
+    // ApiServer,
     TabsPage
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AppData,
+    Profile, 
+    Account, 
+    ApiServer,
     ServerData
   ]
 })

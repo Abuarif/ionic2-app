@@ -36,7 +36,7 @@ export class MyApp {
     public serverDataService: ServerData
   ) {
     this.presentLoading();
-
+    this.appDataService.initializeApplication();
     this.initializeApp();
 
     this.pages = [

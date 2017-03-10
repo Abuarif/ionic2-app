@@ -1,18 +1,100 @@
+import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
+ 
+export class Profile {
+  name: string;
+  staffNumber: number;
+  email: string;
+  userId: number;
+  department: any;
+  baseLocation: any;
 
-/*
-  Generated class for the AppData provider.
+  public init (name, staffNumber, email, department, baseLocation) {
+    // this.name = name;
+    // this.staffNumber = staffNumber;
+    // this.email = email;
+    // this.department = department;
+    // this.baseLocation = baseLocation;
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
+    return {name: name, staffNumber: staffNumber, email: email, department: department, baseLocation:baseLocation};
+    // return Profile;
+  }
+}
+
+export class Account {
+  key: any;
+  isCheckedIn: any;
+  isActivated: any;
+
+  public init() {
+    this.key = '';
+    this.isActivated = false;
+    this.isCheckedIn = false;
+    console.log('isActivated:' + this.isActivated);
+    return {key: this.key, isActivated: this.isActivated, isCheckedIn: this.isCheckedIn};
+    // return Account;
+  }
+}
+
+export class ApiServer {
+  url: any;
+
+  public init(url) {
+    // this.url = url;
+    // return ApiServer;
+    return {url: url};
+  }
+}
+
 @Injectable()
 export class AppData {
-
-  constructor(public http: Http) {
-    console.log('Hello AppData Provider');
+  profile: any;
+  account: any;
+  server: any;
+ 
+  constructor(
+    public storage: Storage, 
+    public profileClass: Profile,
+    public accountClass: Account,
+    public apiServerClass: ApiServer){
+ 
   }
+ 
+  getData(key) {
+    return this.storage.get(key);  
+  }
+ 
+  save(key, data){
+    let newData = JSON.stringify(data);
+    this.storage.set(key, newData);
+  }
+ 
+  public initializeApplication() {
+    this.getData('profile')
+      .then((profile) => {
+        if (profile) {
+          this.profile = JSON.parse(profile);
+        } else {
+          this.profile = this.profileClass.init('Suhaimi Maidin', '10010060', 'suhaimi.maidin@prasarana.com.my', 'ICT', 'Subang');
+        }
+      });
 
+    this.getData('account')
+      .then((account) => {
+        if (account) {
+          this.account = JSON.parse(account);
+        } else {
+          this.account = this.accountClass.init();
+        }
+      });
+
+    this.getData('server')
+      .then((server) => {
+        if (server) {
+          this.server = JSON.parse(server);
+        } else {
+          this.server = this.apiServerClass.init('https://mtas.prasarana.com.my');
+        }
+      });
+  }
 }
