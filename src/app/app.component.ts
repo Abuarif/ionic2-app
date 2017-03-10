@@ -3,6 +3,7 @@ import { Platform, Nav, LoadingController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { TabsPage } from '../pages/tabs/tabs';
+import { TabStatsPage } from '../pages/tabs/tabs.stats';
 
 import { ActivitiesPage } from '../pages/activities/activities';
 
@@ -10,9 +11,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { SignInPage } from '../pages/sign-in/sign-in';
 import { SignUpPage } from '../pages/sign-up/sign-up';
 
-import { StatsPage } from '../pages/stats/stats';
 import { PersonalStatsPage } from '../pages/personal-stats/personal-stats';
-import { GroupStatsPage } from '../pages/group-stats/group-stats';
 
 import { AppData } from '../providers/app-data';
 import { ServerData } from '../providers/server-data';
@@ -48,9 +47,8 @@ export class MyApp {
     ];
 
     this.stats = [
-      { title: 'Overall', component: StatsPage, icon: 'globe' },
+      { title: 'Overall', component: TabStatsPage, icon: 'globe' },
       { title: 'Personal', component: PersonalStatsPage, icon: 'person' },
-      { title: 'Group', component: GroupStatsPage, icon: 'people' }
     ];
   }
   requestForActivation() {

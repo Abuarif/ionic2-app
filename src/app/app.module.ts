@@ -12,6 +12,7 @@ import { StatsPage } from '../pages/stats/stats';
 import { PersonalStatsPage } from '../pages/personal-stats/personal-stats';
 import { GroupStatsPage } from '../pages/group-stats/group-stats';
 import { TabsPage } from '../pages/tabs/tabs';
+import { TabStatsPage } from '../pages/tabs/tabs.stats';
 
 import { AppData, Profile, Account, ApiServer } from '../providers/app-data';
 import { ServerData } from '../providers/server-data';
@@ -28,10 +29,8 @@ import { ServerData } from '../providers/server-data';
     StatsPage,
     PersonalStatsPage,
     GroupStatsPage,
-    // Profile,
-    // Account, 
-    // ApiServer,
-    TabsPage
+    TabsPage,
+    TabStatsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -49,10 +48,8 @@ import { ServerData } from '../providers/server-data';
     StatsPage,
     PersonalStatsPage,
     GroupStatsPage,
-    // Profile,
-    // Account, 
-    // ApiServer,
-    TabsPage
+    TabsPage,
+    TabStatsPage
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
