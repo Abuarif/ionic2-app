@@ -51,6 +51,7 @@ export class MyApp {
     ];
 
     this.stats = [
+      { title: 'Overall', component: StatsPage, icon: 'persons' },
       { title: 'Personal', component: PersonalStatsPage, icon: 'person' },
       { title: 'Group', component: GroupStatsPage, icon: 'people' },
     ];
