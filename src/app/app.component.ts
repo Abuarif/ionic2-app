@@ -4,12 +4,12 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
-import { MapPage } from '../pages/map/map';
 import { ActivitiesPage } from '../pages/activities/activities';
-import { ActivityPage } from '../pages/activity/activity';
+
 import { ProfilePage } from '../pages/profile/profile';
 import { SignInPage } from '../pages/sign-in/sign-in';
 import { SignUpPage } from '../pages/sign-up/sign-up';
+
 import { StatsPage } from '../pages/stats/stats';
 import { PersonalStatsPage } from '../pages/personal-stats/personal-stats';
 import { GroupStatsPage } from '../pages/group-stats/group-stats';
@@ -36,24 +36,21 @@ export class MyApp {
     public serverDataService: ServerData
   ) {
     this.presentLoading();
-    
+
     this.initializeApp();
 
     this.pages = [
       { title: 'Home', component: TabsPage, icon: 'home' },
-      { title: 'Profile', component: ProfilePage, icon: 'person' },
-      { title: 'Attendance', component: ActivitiesPage, icon: 'list' },
-    ];
-
-    this.pages = [
+      { title: 'Profile', component: ProfilePage, icon: 'finger-print' },
       { title: 'Sign In', component: SignInPage, icon: 'log-in' },
-      { title: 'Sign Up', component: SignUpPage, icon: 'person-add' }
+      { title: 'Sign Up', component: SignUpPage, icon: 'person-add' },
+      { title: 'Attendance', component: ActivitiesPage, icon: 'list' }
     ];
 
     this.stats = [
-      { title: 'Overall', component: StatsPage, icon: 'persons' },
+      { title: 'Overall', component: StatsPage, icon: 'globe' },
       { title: 'Personal', component: PersonalStatsPage, icon: 'person' },
-      { title: 'Group', component: GroupStatsPage, icon: 'people' },
+      { title: 'Group', component: GroupStatsPage, icon: 'people' }
     ];
   }
   requestForActivation() {
