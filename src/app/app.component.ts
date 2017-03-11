@@ -25,8 +25,8 @@ export class MyApp {
   operations: Array<{ title: string, component: any, icon: any }>;
   pages: Array<{ title: string, component: any, icon: any }>;
   stats: Array<{ title: string, component: any, icon: any }>;
-  name: string;
-  isActivated: any;
+  profile: any;
+  account: any;
 
   constructor(
     public platform: Platform,
@@ -35,7 +35,6 @@ export class MyApp {
     public serverDataService: ServerData
   ) {
     this.presentLoading();
-    this.appDataService.initializeApplication();
     this.initializeApp();
 
     this.pages = [
@@ -51,17 +50,13 @@ export class MyApp {
       { title: 'Personal', component: PersonalStatsPage, icon: 'person' },
     ];
   }
-  requestForActivation() {
-    this.nav.push(SignInPage);
-  }
-
   initializeApp() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
-
+      this.appDataService.initializeApplication();
     });
   }
 

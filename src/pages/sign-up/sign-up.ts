@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, Nav, AlertController } from 'ionic-angular';
 import { AppData } from '../../providers/app-data';
 import { SignInPage } from '../sign-in/sign-in';
+import { TabsPage } from '../tabs/tabs';
 
 @Component({
   selector: 'page-sign-up',
@@ -23,7 +24,8 @@ export class SignUpPage {
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
-    public appDataService: AppData
+    public appDataService: AppData,
+    private nav: Nav
     ) { }
 
   ionViewDidLoad() {
@@ -32,6 +34,10 @@ export class SignUpPage {
 
   goToRoot() {
     this.navCtrl.popToRoot();
+  }
+
+  cancelSignUp() {
+    this.nav.setRoot(TabsPage);
   }
 
   resetForm() {
@@ -43,7 +49,7 @@ export class SignUpPage {
         if (success) {
           this.createSuccess = true;
           // this.showPopup("Success", "Account created.");
-          this.appDataService.account.isActivated = false;
+          this.appDataService.resetApplication();
           this.navCtrl.push(SignInPage);
         } else {
           this.showPopup("Error", "Problem creating account.");

@@ -79,11 +79,11 @@
       </ion-avatar>
       <p>Account Status</p>
       <h2 *ngIf="account.isActivated">
-        Account is activated.
+        Account is activated. 
       </h2>
       <h2 *ngIf="!account.isActivated">
         Account is inactive.
-      </h2>
+      </h2> {{ account.isActivated }}
     </ion-item>
   </ion-list>
   <ion-grid>

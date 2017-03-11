@@ -40,7 +40,27 @@ export class ProfilePage {
   }
 
   signUp() {
-    this.navCtrl.push(SignUpPage);
+    let confirm = this.alertCtrl.create({
+      title: 'Sign Up',
+      message: 'Are you sure you want to proceed? This action will remove the curret profile.',
+      buttons: [
+        {
+          text: 'Disagree',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Agree',
+          handler: () => {
+            console.log('Agree clicked ');
+            this.appDataService.account.isActivated = false;
+            this.navCtrl.push(SignUpPage);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 

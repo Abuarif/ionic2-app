@@ -23,9 +23,9 @@ export class Profile {
 }
 
 export class Account {
-  key: any;
-  isCheckedIn: any;
-  isActivated: any;
+  key: string;
+  isCheckedIn: boolean;
+  isActivated: boolean;
 
   public init() {
     this.key = '';
@@ -39,6 +39,9 @@ export class Account {
 
 export class ApiServer {
   url: any;
+  auth: any;
+  tag: any;
+  log: any;
 
   public init(url) {
     // this.url = url;
@@ -67,10 +70,18 @@ export class AppData {
 
   save(key, data) {
     let newData = JSON.stringify(data);
+    console.log('data: ' + newData);
     this.storage.set(key, newData);
   }
 
+  public resetApplication() {
+    this.profile = this.profileClass.init('Suhaimi Maidin', '10010060', 'suhaimi.maidin@prasarana.com.my', 'ICT', 'Subang');
+    this.account = this.accountClass.init();
+    this.server = this.apiServerClass.init('https://mtas.prasarana.com.my');
+  }
+
   public initializeApplication() {
+    console.log('Initializa App Data');
     this.getData('profile')
       .then((profile) => {
         if (profile) {

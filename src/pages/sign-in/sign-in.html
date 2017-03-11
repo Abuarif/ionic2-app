@@ -1,15 +1,40 @@
 <ion-header>
-
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Sign In</ion-title>
   </ion-navbar>
-
 </ion-header>
-
-
 <ion-content padding>
+  <form (ngSubmit)="login()" #registerForm="ngForm">
+
+    <ion-list>
+
+      <ion-item>
+        <ion-label floating>Email Address</ion-label>
+        <ion-input type="text" name="email" [(ngModel)]="credentials.email" required (click)="setInput()"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Email Password</ion-label>
+        <ion-input type="password" name="password" [(ngModel)]="credentials.password" required></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col width-50>
+          <button ion-button color="primary" block round type="submit" [disabled]="!registerForm.form.valid">Sign In</button>
+        </ion-col>
+        <ion-col width-50>
+          <button ion-button full round color="danger" (click)="cancelSignIn()">Cancel</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </form>
+
 
 </ion-content>
