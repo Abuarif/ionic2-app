@@ -1,15 +1,57 @@
 <ion-header>
-
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Sign Up</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
+  <form (ngSubmit)="register()" #registerForm="ngForm">
 
+    <ion-list>
+
+      <ion-item>
+        <ion-label floating>Full Name</ion-label>
+        <ion-input type="text" name="name" [(ngModel)]="profile.name" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Staff Number</ion-label>
+        <ion-input type="number" name="staffNumber" [(ngModel)]="profile.staffNumber" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Email Address</ion-label>
+        <ion-input type="email" name="email" [(ngModel)]="profile.email" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Department</ion-label>
+        <ion-select [(ngModel)]="profile.department" name="department">
+          <ion-option *ngFor="let dept of depts" [value]="dept">{{ dept }}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Base Location</ion-label>
+        <ion-select [(ngModel)]="profile.baseLocation" name="baseLocation">
+          <ion-option *ngFor="let location of baseLocations" [value]="location">{{ location }}</ion-option>
+        </ion-select>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col width-50>
+          <button ion-button color="primary" block round type="submit" [disabled]="!registerForm.form.valid">Sign Up</button>
+        </ion-col>
+        <ion-col width-50>
+          <button ion-button color="danger" block round type="button" (click)="goToRoot()">Cancel</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

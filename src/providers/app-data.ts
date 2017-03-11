@@ -1,6 +1,7 @@
 import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
- 
+import { Observable } from 'rxjs/Observable';
+
 export class Profile {
   name: string;
   staffNumber: number;
@@ -9,14 +10,14 @@ export class Profile {
   department: any;
   baseLocation: any;
 
-  public init (name, staffNumber, email, department, baseLocation) {
+  public init(name, staffNumber, email, department, baseLocation) {
     // this.name = name;
     // this.staffNumber = staffNumber;
     // this.email = email;
     // this.department = department;
     // this.baseLocation = baseLocation;
 
-    return {name: name, staffNumber: staffNumber, email: email, department: department, baseLocation:baseLocation};
+    return { name: name, staffNumber: staffNumber, email: email, department: department, baseLocation: baseLocation };
     // return Profile;
   }
 }
@@ -31,7 +32,7 @@ export class Account {
     this.isActivated = false;
     this.isCheckedIn = false;
     console.log('isActivated:' + this.isActivated);
-    return {key: this.key, isActivated: this.isActivated, isCheckedIn: this.isCheckedIn};
+    return { key: this.key, isActivated: this.isActivated, isCheckedIn: this.isCheckedIn };
     // return Account;
   }
 }
@@ -42,7 +43,7 @@ export class ApiServer {
   public init(url) {
     // this.url = url;
     // return ApiServer;
-    return {url: url};
+    return { url: url };
   }
 }
 
@@ -51,24 +52,24 @@ export class AppData {
   profile: any;
   account: any;
   server: any;
- 
+
   constructor(
-    public storage: Storage, 
+    public storage: Storage,
     public profileClass: Profile,
     public accountClass: Account,
-    public apiServerClass: ApiServer){
- 
+    public apiServerClass: ApiServer) {
+
   }
- 
+
   getData(key) {
-    return this.storage.get(key);  
+    return this.storage.get(key);
   }
- 
-  save(key, data){
+
+  save(key, data) {
     let newData = JSON.stringify(data);
     this.storage.set(key, newData);
   }
- 
+
   public initializeApplication() {
     this.getData('profile')
       .then((profile) => {
@@ -96,5 +97,56 @@ export class AppData {
           this.server = this.apiServerClass.init('https://mtas.prasarana.com.my');
         }
       });
+  }
+
+  public getProfile() {
+    return this.profile;
+  }
+
+  public setProfile(newProfile) {
+    if (newProfile === null) {
+      return Observable.throw("Please key in your name ...");
+    } else {
+      this.profile = newProfile;
+      this.save('profile', newProfile);
+      return Observable.create(observer => {
+        observer.next(true);
+        observer.complete();
+      });
+    }
+  }
+
+  public getAccount() {
+    return this.account;
+  }
+
+  public setAccount(newAccount) {
+    if (newAccount === null) {
+      return Observable.throw("Please key in your account data ...");
+    } else {
+      this.account = newAccount;
+      this.save('account', newAccount);
+      return Observable.create(observer => {
+        observer.next(true);
+        observer.complete();
+      });
+    }
+  }
+
+  public getServer() {
+    return this.server;
+  }
+
+  public setServer(newServer) {
+    if (newServer === null) {
+      return Observable.throw("Please key in your url ...");
+    } else {
+      this.server = newServer;
+      this.save('server', newServer);
+      return Observable.create(observer => {
+        observer.next(true);
+        observer.complete();
+      });
+    }
   }
 }

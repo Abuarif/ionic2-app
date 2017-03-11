@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { NavController, AlertController } from 'ionic-angular';
 import { AppData, Profile, Account, ApiServer } from '../../providers/app-data';
+import { SignUpPage } from '../sign-up/sign-up';
+import { SignInPage } from '../sign-in/sign-in';
 
 @Component({
   selector: 'page-profile',
@@ -16,7 +19,9 @@ export class ProfilePage {
     public appDataService: AppData,
     public profileClass: Profile,
     public accountClass: Account,
-    public serverClass: ApiServer
+    public serverClass: ApiServer,
+    public navCtrl: NavController,
+    public alertCtrl: AlertController
   ) {
     this.appDataService.initializeApplication();
     this.profile = this.appDataService.profile;
@@ -24,38 +29,21 @@ export class ProfilePage {
     this.server = this.appDataService.server;
 
     console.log('Profile: ' + this.profile);
-   }
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
   }
 
-  public getProfile() {
-    return this.profile;
+  signIn() {
+    this.navCtrl.push(SignInPage);
   }
 
-  public setProfile(newProfile) {
-    this.profile = newProfile;
-    this.appDataService.save('profile', newProfile);
+  signUp() {
+    this.navCtrl.push(SignUpPage);
   }
 
-  public getAccount() {
-    return this.account;
-  }
 
-  public setAccount(newAccount) {
-    this.account = newAccount;
-    this.appDataService.save('account', newAccount);
-  }
-
-  public getServer() {
-    return this.server;
-  }
-
-  public setServer(newServer) {
-    this.server = newServer;
-    this.appDataService.save('server', newServer);
-  }
 
 }
 

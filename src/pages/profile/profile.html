@@ -89,16 +89,16 @@
   <ion-grid>
     <ion-row>
       <ion-col width-50>
-        <button ion-button full round color="primary" (click)="registerUser()">
-          <ion-icon name="person"></ion-icon>&nbsp;&nbsp;Add
+        <button ion-button full round color="primary" (click)="signUp()">
+          <ion-icon name="person"></ion-icon>&nbsp;&nbsp;Sign Up
         </button>
       </ion-col>
       <ion-col width-50>
-        <button ion-button full round color="danger"  *ngIf="account.isActivated" disabled>
-          <ion-icon name="lock"></ion-icon>&nbsp;&nbsp;Activate 
+        <button ion-button full round color="danger" *ngIf="account.isActivated" disabled>
+          <ion-icon name="lock"></ion-icon>&nbsp;&nbsp;Sign In 
         </button>
-        <button ion-button full round color="danger" *ngIf="!account.isActivated" (click)="requestForActivation()">
-          <ion-icon name="lock"></ion-icon>&nbsp;&nbsp;Activate 
+        <button ion-button full round color="danger" *ngIf="!account.isActivated" (click)="signIn()">
+          <ion-icon name="lock"></ion-icon>&nbsp;&nbsp;Sign In 
         </button>
       </ion-col>
     </ion-row>
