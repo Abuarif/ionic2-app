@@ -30,23 +30,23 @@ export class MyApp {
     public platform: Platform,
     public loadingCtrl: LoadingController,
     public appDataService: AppData,
-    public serverDataService: ServerData
+    public serverDataService: ServerData,
   ) {
     this.presentLoading();
     this.initializeApp();
 
     this.operations = [
-      { title: 'Log In', component: SignInPage, icon: 'log-in' },
+      { title: 'Log In', component: SignInPage, icon: 'log-in' }
     ];
     this.pages = [
       { title: 'Home', component: TabsPage, icon: 'home' },
       { title: 'Profile', component: ProfilePage, icon: 'finger-print' },
-      { title: 'Sign Up', component: SignUpPage, icon: 'person-add' },
+      { title: 'Sign Up', component: SignUpPage, icon: 'person-add' }
     ];
 
     this.stats = [
       { title: 'Overall', component: TabStatsPage, icon: 'globe' },
-      { title: 'Personal', component: PersonalStatsPage, icon: 'person' },
+      { title: 'Personal', component: PersonalStatsPage, icon: 'person' }
     ];
   }
   initializeApp() {

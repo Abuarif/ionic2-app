@@ -34,7 +34,7 @@
                 <ion-icon name="lock" item-left color="primary"></ion-icon>
                  Log In
             </ion-list-header>
-            <button menuClose ion-item *ngFor="let op of operations" (click)="openPage(stat)">
+            <button menuClose ion-item *ngFor="let op of operations" (click)="openPage(op)">
                 <ion-icon [name]="op.icon" light item-left></ion-icon>
                 <p>{{op.title}}</p>
             </button>
