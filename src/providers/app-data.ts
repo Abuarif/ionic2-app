@@ -55,7 +55,7 @@ export class AppData {
   profile: any;
   account: any;
   server: any;
-
+  host: string = 'http://localhost/ict';
   constructor(
     public storage: Storage,
     public profileClass: Profile,
@@ -75,9 +75,9 @@ export class AppData {
   }
 
   public resetApplication() {
-    this.profile = this.profileClass.init('Suhaimi Maidin', '10010060', 'suhaimi.maidin@prasarana.com.my', 'ICT', 'Subang');
+    this.profile = this.profileClass.init('System Admin', '10000001', 'admin@test.com', 'ICT', 'Subang');
     this.account = this.accountClass.init();
-    this.server = this.apiServerClass.init('https://mtas.prasarana.com.my');
+    this.server = this.apiServerClass.init(this.host);
   }
 
   public initializeApplication() {
@@ -87,7 +87,7 @@ export class AppData {
         if (profile) {
           this.profile = JSON.parse(profile);
         } else {
-          this.profile = this.profileClass.init('Suhaimi Maidin', '10010060', 'suhaimi.maidin@prasarana.com.my', 'ICT', 'Subang');
+          this.profile = this.profileClass.init('System Admin', '10000001', 'admin@test.com', 'ICT', 'Subang');
         }
       });
 
@@ -105,7 +105,7 @@ export class AppData {
         if (server) {
           this.server = JSON.parse(server);
         } else {
-          this.server = this.apiServerClass.init('https://mtas.prasarana.com.my');
+          this.server = this.apiServerClass.init(this.host);
         }
       });
   }
