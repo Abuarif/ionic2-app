@@ -5,8 +5,6 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TabStatsPage } from '../pages/tabs/tabs.stats';
 
-import { ActivitiesPage } from '../pages/activities/activities';
-
 import { ProfilePage } from '../pages/profile/profile';
 import { SignInPage } from '../pages/sign-in/sign-in';
 import { SignUpPage } from '../pages/sign-up/sign-up';
@@ -37,12 +35,13 @@ export class MyApp {
     this.presentLoading();
     this.initializeApp();
 
+    this.operations = [
+      { title: 'Log In', component: SignInPage, icon: 'log-in' },
+    ];
     this.pages = [
       { title: 'Home', component: TabsPage, icon: 'home' },
       { title: 'Profile', component: ProfilePage, icon: 'finger-print' },
-      { title: 'Sign In', component: SignInPage, icon: 'log-in' },
       { title: 'Sign Up', component: SignUpPage, icon: 'person-add' },
-      { title: 'Attendance', component: ActivitiesPage, icon: 'list' }
     ];
 
     this.stats = [
