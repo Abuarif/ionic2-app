@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, Nav, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { ServerData } from '../../providers/server-data';
 import { AppData } from '../../providers/app-data';
+import { AppProfile } from '../../providers/app-profile';
 import { TabsPage } from '../tabs/tabs';
 
 /*
@@ -19,33 +20,37 @@ export class SignInPage {
   loading: Loading;
   credentials = { email: '', password: '' };
 
+
   constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     public serverDataService: ServerData,
     public appDataService: AppData,
-    private nav: Nav) { }
+    public appProfileService: AppProfile,
+    private nav: Nav) {
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SignInPage');
   }
   setInput() {
-    this.credentials.email = this.appDataService.profile.email;
+    this.credentials.email = this.appProfileService.email;
   }
 
   public login() {
     this.showLoading()
-    this.serverDataService.login(this.credentials).subscribe(allowed => {
-      if (allowed) {
-        setTimeout(() => {
-          this.loading.dismiss();
-          this.navCtrl.setRoot(TabsPage);
-        });
-      } else {
-        this.showError("Access Denied");
-      }
-    },
+    this.serverDataService.login(this.credentials)
+      .subscribe(allowed => {
+        if (allowed) {
+          setTimeout(() => {
+            this.loading.dismiss();
+            this.navCtrl.setRoot(TabsPage);
+          });
+        } else {
+          this.showError("Server is not accessible. Try again!");
+        }
+      },
       error => {
         this.showError(error);
       });

@@ -14,8 +14,11 @@ import { GroupStatsPage } from '../pages/group-stats/group-stats';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TabStatsPage } from '../pages/tabs/tabs.stats';
 
-import { AppData, Profile, Account, ApiServer } from '../providers/app-data';
+import { AppData } from '../providers/app-data';
+import { AppProfile } from '../providers/app-profile';
 import { ServerData } from '../providers/server-data';
+import { ConnectivityService } from '../providers/connectivity-service';
+
 
 @NgModule({
   declarations: [
@@ -54,10 +57,9 @@ import { ServerData } from '../providers/server-data';
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AppData,
-    Profile, 
-    Account, 
-    ApiServer,
-    ServerData
+    AppProfile,
+    ServerData,
+    ConnectivityService
   ]
 })
 export class AppModule {}

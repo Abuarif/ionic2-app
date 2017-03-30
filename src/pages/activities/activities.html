@@ -1,15 +1,65 @@
 <ion-header>
-
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Activities</ion-title>
+    <ion-title>Attendance</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
+  <ion-row>
+    <ion-col width-80>
+      <ion-item>
+    <ion-label fixed>Show list</ion-label>
+    <ion-select (ionChange)="changeLimit()" [(ngModel)]="limit" name="limit" item-right>
+      <ion-option value="5">5</ion-option>
+      <ion-option value="10">10</ion-option>
+      <ion-option value="15">15</ion-option>
+      <ion-option value="20">20</ion-option>
+      <ion-option value="25">25</ion-option>
+      <ion-option value="30">30</ion-option>
+    </ion-select>
+  </ion-item>
+    </ion-col>
+    <ion-col width-20>
+     <button ion-button color="light" block round (click)="changeLimit()"><ion-icon name="refresh"></ion-icon></button>
+    </ion-col>
+  </ion-row>
+  
+  <ion-list>
+    <ion-item *ngFor="let service of services">
+      {{ service.UserService.service_date | date:'EEEE, dd-MM-yyyy'}}
+      <ion-item *ngFor="let tag of service.UserTag">
+        <ion-icon name="sunny" color="secondary" *ngIf="tag.direction == 1" item-left></ion-icon>
+        <ion-icon name="moon" color="dark" *ngIf="tag.direction == 2" item-left></ion-icon>
+        <label *ngIf="tag.direction == 1">In</label>
+        <label *ngIf="tag.direction == 2">Out</label>
+        <p item-right>{{ tag.tag_date | date:'hh:mma'}}</p>
+      </ion-item>
+    </ion-item>
+  </ion-list>
+
+  <!--<ion-list [virtualScroll]="services" approxItemHeight="50px">
+    <ion-item *virtualItem="let service">
+      
+     service: {{ service }}
+     UserService: {{ service.UserService }}
+      {{ service.UserService.service_date | date:'EEEE, dd-MM-yyyy'}}
+      <ion-item *ngFor="let tag of service.UserTag">
+        <ion-icon name="sunny" color="secondary" *ngIf="tag.direction == 1" item-left></ion-icon>
+        <ion-icon name="moon" color="dark" *ngIf="tag.direction == 2" item-left></ion-icon>
+        <label *ngIf="tag.direction == 1">In</label>
+        <label *ngIf="tag.direction == 2">Out</label>
+        <p item-right>{{ tag.tag_date | date:'hh:mma'}}</p>
+      </ion-item>
+    </ion-item>
+  </ion-list>
+
+  <ion-label *ngIf="services.length == 0">No record yet.</ion-label>
+
+  <ion-infinite-scroll (infinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>-->
 
 </ion-content>

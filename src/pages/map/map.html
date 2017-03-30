@@ -1,15 +1,29 @@
 <ion-header>
-
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Locate</ion-title>
+    <ion-title>Check In/Out</ion-title>
   </ion-navbar>
-
 </ion-header>
-
-
-<ion-content padding>
-
+<ion-content>
+  <div #map id="map"></div>
+  <ion-grid>
+    <ion-row>
+      <ion-col width-100>
+        <button ion-button full round color="light" (click)="initMap()">
+          <ion-icon name="locate"> </ion-icon>&nbsp;&nbsp;&nbsp;Locate
+        </button>
+      </ion-col>
+      <ion-col width-50>
+        <button ion-button full round color="secondary" [disabled]="isActivated == false ? true: null" *ngIf="canCheckIn()"
+          (click)="submitCheckInData()">
+          <ion-icon name="clock"> Check In</ion-icon> 
+        </button>
+        <button ion-button full round color="danger" *ngIf="canCheckOut()" (click)="submitCheckOutData()">
+          <ion-icon name="clock"> Check Out</ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

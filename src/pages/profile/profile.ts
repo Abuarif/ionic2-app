@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
-import { AppData, Profile, Account, ApiServer } from '../../providers/app-data';
+import { NavController, AlertController, Nav } from 'ionic-angular';
+// import { AppData } from '../../providers/app-data';
+import { AppProfile } from '../../providers/app-profile';
 import { SignUpPage } from '../sign-up/sign-up';
 import { SignInPage } from '../sign-in/sign-in';
 
@@ -11,28 +12,35 @@ import { SignInPage } from '../sign-in/sign-in';
 
 export class ProfilePage {
 
-  profile: any;
-  account: any;
-  server: any;
+  name: string;
+  staffNumber: number;
+  email: string;
+  department: string;
+  baseLocation: string;
+  key: string;
+  user_id: string;
+  isActivated: boolean;
+  isCheckedIn: boolean;
 
   constructor(
-    public appDataService: AppData,
-    public profileClass: Profile,
-    public accountClass: Account,
-    public serverClass: ApiServer,
+    // public appDataService: AppData,
     public navCtrl: NavController,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public appProfileService: AppProfile,
+    private nav: Nav
   ) {
-    this.appDataService.initializeApplication();
-    this.profile = this.appDataService.profile;
-    this.account = this.appDataService.account;
-    this.server = this.appDataService.server;
 
-    console.log('Profile: ' + this.profile);
-  }
+    this.appProfileService.getAppProfile();
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
+    this.name = this.appProfileService.name;
+    this.staffNumber = this.appProfileService.staffNumber;
+    this.email = this.appProfileService.email;
+    this.department = this.appProfileService.department;
+    this.baseLocation = this.appProfileService.baseLocation;
+    this.key = this.appProfileService.key;
+    this.user_id = this.appProfileService.user_id;
+    this.isActivated = this.appProfileService.isActivated;
+    this.isCheckedIn = this.appProfileService.isCheckedIn;
   }
 
   signIn() {
@@ -54,7 +62,7 @@ export class ProfilePage {
           text: 'Agree',
           handler: () => {
             console.log('Agree clicked ');
-            this.appDataService.account.isActivated = false;
+            this.appProfileService.isActivated = false;
             this.navCtrl.push(SignUpPage);
           }
         }
@@ -63,7 +71,28 @@ export class ProfilePage {
     confirm.present();
   }
 
-
+  clear() {
+    let confirm = this.alertCtrl.create({
+      title: 'Clear All Data',
+      message: 'Are you sure you want to proceed? This action will remove all data in this app.',
+      buttons: [
+        {
+          text: 'Disagree',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Agree',
+          handler: () => {
+            this.appProfileService.clear();
+            this.nav.setRoot(SignUpPage);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
 
 }
 

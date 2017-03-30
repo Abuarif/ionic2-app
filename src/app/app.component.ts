@@ -11,30 +11,34 @@ import { SignUpPage } from '../pages/sign-up/sign-up';
 
 import { PersonalStatsPage } from '../pages/personal-stats/personal-stats';
 
-import { AppData } from '../providers/app-data';
-import { ServerData } from '../providers/server-data';
+import { AppProfile } from '../providers/app-profile';
 
 @Component({
   templateUrl: 'app.html'
 })
+
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  
   rootPage = TabsPage;
   operations: Array<{ title: string, component: any, icon: any }>;
   pages: Array<{ title: string, component: any, icon: any }>;
   stats: Array<{ title: string, component: any, icon: any }>;
-  profile: any;
-  account: any;
+  name: string;
+  staffNumber: number;
 
   constructor(
     public platform: Platform,
     public loadingCtrl: LoadingController,
-    public appDataService: AppData,
-    public serverDataService: ServerData,
+    public appProfileService: AppProfile
   ) {
     this.presentLoading();
     this.initializeApp();
-
+    this.appProfileService.getAppProfile();
+    
+    this.name = this.appProfileService.name;
+    this.staffNumber = this.appProfileService.staffNumber;
+    
     this.operations = [
       { title: 'Log In', component: SignInPage, icon: 'log-in' }
     ];
@@ -55,7 +59,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
-      this.appDataService.initializeApplication();
+      ;
     });
   }
 

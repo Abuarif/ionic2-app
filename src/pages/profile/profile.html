@@ -20,7 +20,7 @@
         Full Name
         <p>
           <h2>
-            {{ profile.name }}
+            {{ name }}
           </h2>
     </ion-item>
 
@@ -32,7 +32,7 @@
         Staff Number
         <p>
           <h2>
-            {{ profile.staffNumber }}
+            {{ staffNumber }}
           </h2>
     </ion-item>
 
@@ -44,44 +44,20 @@
         Email Address
         <p>
           <h2>
-            {{ profile.email }}
+            {{ email }}
           </h2>
     </ion-item>
 
     <ion-item>
       <ion-avatar item-left>
-        <ion-icon name='home'></ion-icon>
-      </ion-avatar>
-      <p>
-        Department
-        <p>
-          <h2>
-            {{ profile.department }}
-          </h2>
-    </ion-item>
-
-    <ion-item>
-      <ion-avatar item-left>
-        <ion-icon name='at'></ion-icon>
-      </ion-avatar>
-      <p>
-        Base Location
-        <p>
-          <h2>
-            {{ profile.baseLocation }}
-          </h2>
-    </ion-item>
-
-    <ion-item>
-      <ion-avatar item-left>
-        <ion-icon name="lock" *ngIf="account.isActivated" item-right color="secondary"></ion-icon>
-        <ion-icon name="unlock" *ngIf="!account.isActivated" item-right color="danger"></ion-icon>
+        <ion-icon name="lock" *ngIf="isActivated" item-right color="secondary"></ion-icon>
+        <ion-icon name="unlock" *ngIf="!isActivated" item-right color="danger"></ion-icon>
       </ion-avatar>
       <p>Account Status</p>
-      <h2 *ngIf="account.isActivated">
+      <h2 *ngIf="isActivated">
         Account is activated. 
       </h2>
-      <h2 *ngIf="!account.isActivated">
+      <h2 *ngIf="!isActivated">
         Account is inactive.
       </h2>
     </ion-item>
@@ -94,11 +70,18 @@
         </button>
       </ion-col>
       <ion-col width-50>
-        <button ion-button full round color="danger" *ngIf="account.isActivated" disabled>
+        <button ion-button full round color="danger" *ngIf="isActivated" disabled>
           <ion-icon name="lock"></ion-icon>&nbsp;&nbsp;Log In 
         </button>
-        <button ion-button full round color="danger" *ngIf="!account.isActivated" (click)="signIn()">
+        <button ion-button full round color="danger"  *ngIf="!isActivated" (click)="signIn()">
           <ion-icon name="lock"></ion-icon>&nbsp;&nbsp;Log In 
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col width-100>
+        <button ion-button full round color="danger" *ngIf="name != null" (click)="clear()">
+          <ion-icon name="person"></ion-icon>&nbsp;&nbsp;Clear All Data
         </button>
       </ion-col>
     </ion-row>

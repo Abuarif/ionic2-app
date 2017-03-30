@@ -2,128 +2,79 @@ import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-export class Profile {
-  name: string;
-  staffNumber: number;
-  email: string;
-  userId: number;
-  department: any;
-  baseLocation: any;
-
-  public init(name, staffNumber, email, department, baseLocation) {
-    // this.name = name;
-    // this.staffNumber = staffNumber;
-    // this.email = email;
-    // this.department = department;
-    // this.baseLocation = baseLocation;
-
-    return { name: name, staffNumber: staffNumber, email: email, department: department, baseLocation: baseLocation };
-    // return Profile;
-  }
-}
-
-export class Account {
-  key: string;
-  isCheckedIn: boolean;
-  isActivated: boolean;
-
-  public init() {
-    this.key = '';
-    this.isActivated = false;
-    this.isCheckedIn = false;
-    console.log('isActivated:' + this.isActivated);
-    return { key: this.key, isActivated: this.isActivated, isCheckedIn: this.isCheckedIn };
-    // return Account;
-  }
-}
-
-export class ApiServer {
-  url: any;
-  auth: any;
-  tag: any;
-  log: any;
-
-  public init(url) {
-    // this.url = url;
-    // return ApiServer;
-    return { url: url };
-  }
-}
 
 @Injectable()
 export class AppData {
-  profile: any;
-  account: any;
-  server: any;
-  host: string = 'http://localhost/ict';
-  constructor(
-    public storage: Storage,
-    public profileClass: Profile,
-    public accountClass: Account,
-    public apiServerClass: ApiServer) {
+  public profile: { name: string, staffNumber: number, email: string, department: string, baseLocation: string };
+  public account: { key: string, user_id: string, isActivated: boolean, isCheckedIn: boolean };
+  storage: Storage;
+  constructor() {
+    this.storage = new Storage();
+    this.profile = { name: '', staffNumber: 0, email: '', department: '', baseLocation: '' };
+    this.account = { key: 'empty', user_id: 'empty', isActivated: false, isCheckedIn: false };
+
+    // get profile from local storage is any
+    this.getData('profile').then((profile) => {
+      if (profile) {
+        return JSON.parse(profile);
+      } else {
+        profile = {
+          name: 'Suhaimi Maidin',
+          staffNumber: 10010060,
+          email: 'suhaimi.maidin@prasarana.com.my',
+          department: 'ICT',
+          baseLocation: 'Subang'
+        };
+      }
+      return profile;
+    }).then((data) => {
+      this.profile = data;
+    });
+
+    // get account setting from local storage if any
+    this.getData('account').then((account) => {
+      if (account) {
+        return JSON.parse(account);
+      } else {
+        account = {
+          key: 'empty',
+          user_id: 'empty',
+          isActivated: false,
+          isCheckedIn: false
+        };
+      }
+      return account;
+    }).then((data) => {
+      this.account = data;
+    });
 
   }
 
+
+  resetStorage() {
+    this.storage.clear();
+  }
   getData(key) {
     return this.storage.get(key);
   }
 
   save(key, data) {
+    console.log('Save: ' + key);
+    console.log('Data: ' + data);
     let newData = JSON.stringify(data);
-    console.log('data: ' + newData);
     this.storage.set(key, newData);
-  }
-
-  public resetApplication() {
-    this.profile = this.profileClass.init('System Admin', '10000001', 'admin@test.com', 'ICT', 'Subang');
-    this.account = this.accountClass.init();
-    this.server = this.apiServerClass.init(this.host);
-  }
-
-  public initializeApplication() {
-    console.log('Initializa App Data');
-    this.getData('profile')
-      .then((profile) => {
-        if (profile) {
-          this.profile = JSON.parse(profile);
-        } else {
-          this.profile = this.profileClass.init('System Admin', '10000001', 'admin@test.com', 'ICT', 'Subang');
-        }
-      });
-
-    this.getData('account')
-      .then((account) => {
-        if (account) {
-          this.account = JSON.parse(account);
-        } else {
-          this.account = this.accountClass.init();
-        }
-      });
-
-    this.getData('server')
-      .then((server) => {
-        if (server) {
-          this.server = JSON.parse(server);
-        } else {
-          this.server = this.apiServerClass.init(this.host);
-        }
-      });
   }
 
   public getProfile() {
     return this.profile;
   }
 
-  public setProfile(newProfile) {
-    if (newProfile === null) {
+  public setProfile(profile) {
+    if (profile === null) {
       return Observable.throw("Please key in your name ...");
     } else {
-      this.profile = newProfile;
-      this.save('profile', newProfile);
-      return Observable.create(observer => {
-        observer.next(true);
-        observer.complete();
-      });
+      this.save('profile', profile);
+      this.profile = profile;
     }
   }
 
@@ -131,33 +82,127 @@ export class AppData {
     return this.account;
   }
 
-  public setAccount(newAccount) {
-    if (newAccount === null) {
+  public setAccount(account) {
+    if (account === null) {
       return Observable.throw("Please key in your account data ...");
     } else {
-      this.account = newAccount;
-      this.save('account', newAccount);
-      return Observable.create(observer => {
-        observer.next(true);
-        observer.complete();
-      });
+      this.save('account', account);
+      this.getData('account')
+        .then((account) => {
+          if (account) {
+            this.account = JSON.parse(account);
+          } else {
+            this.account = {
+              key: 'empty',
+              user_id: 'empty',
+              isActivated: false,
+              isCheckedIn: false
+            };
+
+            console.log('isActivated: ' + this.account.isActivated);
+          }
+        }).catch((ex) => {
+          console.error('Error fetching account', ex);
+        });
     }
   }
 
-  public getServer() {
-    return this.server;
+  public updateAccount(data: { key: string, user_id: string, isActivated: boolean, isCheckedIn: boolean }) {
+    console.log('Call update Account');
+    // get local data.. then update on the variant
+    this.getData('account')
+      .then((account) => {
+        if (account) {
+          this.account = JSON.parse(account);
+        } else {
+          account = {
+            key: 'empty',
+            user_id: 'empty',
+            isActivated: false,
+            isCheckedIn: false
+          };
+        }
+        // compare data
+        if (data.isActivated === null) {
+          console.log('update isActivated');
+          account = {
+            isActivated: data.isActivated
+          };
+        }
+        if (data.isCheckedIn === null) {
+          console.log('update isCheckedIn');
+          account = {
+            isCheckedIn: data.isCheckedIn
+          };
+        }
+        if (data.key === null) {
+          console.log('update key');
+          account = {
+            key: data.key
+          };
+        }
+        if (data.user_id === null) {
+          console.log('update user_id');
+          account = {
+            user_id: data.user_id
+          };
+        }
+        // save account
+        console.log('App data account: ' + account);
+        this.save('account', account);
+      }).catch((ex) => {
+        console.error('Error fetching account', ex);
+      });
+
   }
 
-  public setServer(newServer) {
-    if (newServer === null) {
-      return Observable.throw("Please key in your url ...");
-    } else {
-      this.server = newServer;
-      this.save('server', newServer);
-      return Observable.create(observer => {
-        observer.next(true);
-        observer.complete();
-      });
-    }
+  public initializeApplication() {
+    console.log('Initialize App Data');
+    return Observable.create(observer => {
+      let access = false;
+      this.getData('profile')
+        .then((profile) => {
+          if (profile) {
+            this.profile = JSON.parse(profile);
+          } else {
+            this.profile = {
+              name: 'Suhaimi Maidin',
+              staffNumber: 10010060,
+              email: 'suhaimi.maidin@prasarana.com.my',
+              department: 'ICT',
+              baseLocation: 'Subang'
+            };
+
+            if (this.profile.name != '') {
+              console.log('Name: ' + this.profile.name);
+              access = true;
+            }
+          }
+        }).catch((ex) => {
+          console.error('Error fetching profile', ex);
+        });
+
+      this.getData('account')
+        .then((account) => {
+          if (account) {
+            this.account = JSON.parse(account);
+          } else {
+            this.account = {
+              key: 'empty',
+              user_id: 'empty',
+              isActivated: false,
+              isCheckedIn: false
+            };
+
+            console.log('isActivated: ' + this.account.isActivated);
+          }
+        }).catch((ex) => {
+          console.error('Error fetching account', ex);
+        });
+
+      observer.next(access);
+      observer.complete();
+    });
   }
+
 }
