@@ -1,6 +1,6 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
+  "name": "mTAS",
+  "author": "Suhaimi Maidin",
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
@@ -47,5 +47,5 @@
       "locator": "ios"
     }
   ],
-  "description": "blank: An Ionic project"
+  "description": "mTAS: SDU ICT Time Attendance System"
 }
