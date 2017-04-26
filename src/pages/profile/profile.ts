@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, Nav } from 'ionic-angular';
-// import { AppData } from '../../providers/app-data';
+import { ServerData } from '../../providers/server-data';
 import { AppProfile } from '../../providers/app-profile';
 import { SignUpPage } from '../sign-up/sign-up';
 import { SignInPage } from '../sign-in/sign-in';
@@ -21,9 +21,10 @@ export class ProfilePage {
   user_id: string;
   isActivated: boolean;
   isCheckedIn: boolean;
+  serverUrl: string;
 
   constructor(
-    // public appDataService: AppData,
+    public serverDataService: ServerData,
     public navCtrl: NavController,
     public alertCtrl: AlertController,
     public appProfileService: AppProfile,
@@ -41,6 +42,7 @@ export class ProfilePage {
     this.user_id = this.appProfileService.user_id;
     this.isActivated = this.appProfileService.isActivated;
     this.isCheckedIn = this.appProfileService.isCheckedIn;
+    this.serverUrl = this.appProfileService.serverUrl;
   }
 
   signIn() {

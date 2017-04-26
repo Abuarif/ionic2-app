@@ -12,6 +12,8 @@ export class AppProfile {
   user_id: string;
   isActivated: boolean;
   isCheckedIn: boolean;
+  serverUrl:string;
+
   storage: Storage;
 
   constructor() {
@@ -26,6 +28,7 @@ export class AppProfile {
     this.user_id = 'empty';
     this.isActivated = false;
     this.isCheckedIn = false;
+    this.serverUrl = '';
 
     this.getAppProfile();
   }
@@ -60,6 +63,9 @@ export class AppProfile {
       });
       this.storage.get('isCheckedIn').then((val) => {
         this.isCheckedIn = val;
+      });
+      this.storage.get('serverUrl').then((val) => {
+        this.serverUrl = val;
       });
 
     });

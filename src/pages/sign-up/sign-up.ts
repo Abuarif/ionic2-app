@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, Nav, AlertController } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { AppData } from '../../providers/app-data';
+// import { AppData } from '../../providers/app-data';
 import { AppProfile } from '../../providers/app-profile';
 import { ServerData } from '../../providers/server-data';
 import { SignInPage } from '../sign-in/sign-in';
@@ -23,6 +23,7 @@ export class SignUpPage {
   user_id: string;
   isActivated: boolean;
   isCheckedIn: boolean;
+  serverUrl: string;
 
   createSuccess: any = false;
 
@@ -30,13 +31,14 @@ export class SignUpPage {
     public http: Http,
     public navCtrl: NavController,
     public alertCtrl: AlertController,
-    public appDataService: AppData,
+    // public appDataService: AppData,
     public appProfileService: AppProfile,
     public serverDataService: ServerData,
     private nav: Nav
   ) {
     // get profile from local storage is any
     this.appProfileService.getAppProfile();
+
     this.name = this.appProfileService.name;
     this.staffNumber = this.appProfileService.staffNumber;
     this.email = this.appProfileService.email;
@@ -46,6 +48,7 @@ export class SignUpPage {
     this.user_id = this.appProfileService.user_id;
     this.isActivated = this.appProfileService.isActivated;
     this.isCheckedIn = this.appProfileService.isCheckedIn;
+    this.serverUrl = this.appProfileService.serverUrl;
 
   }
 
@@ -69,7 +72,9 @@ export class SignUpPage {
     this.appProfileService.setAppProfile('staffNumber', this.staffNumber);
     this.appProfileService.setAppProfile('email', this.email);
     this.appProfileService.setAppProfile('isActivated', false);
+    this.appProfileService.setAppProfile('serverUrl', this.serverUrl);
     console.log('new profile: ' + this.name);
+    console.log('new serverUrl: ' + this.serverUrl);
     if (this.name != '') {
       this.nav.setRoot(SignInPage);
     };

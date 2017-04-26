@@ -10,15 +10,17 @@ export class ServerData {
   attendances: any;
   public authUrl: string = '/api/auth.json';
   public signUpUrl: string = '/api/signup.json';
-  public tagUrl: string = '/activity.json';
-  public logUrl: string = '/log.json';
-  public departmentUrl: string = '/department.json';
-  public locationUrl: string = '/location.json';
-  public host: string = 'https://mtas.prasarana.com.my';
-  // public host: string = 'http://localhost/ict';
+  public tagUrl: string = '/api/activity.json';
+  public logUrl: string = '/api/log.json';
+  public departmentUrl: string = '/api/department.json';
+  public locationUrl: string = '/api/location.json';
   public activities = [];
 
-  public apiServer: { host: string, log: string, auth: string, tag: string, department: string, location: string, signup: string };
+  opt: RequestOptions;
+  myHeaders: Headers = new Headers;
+
+
+  public apiServer: { log: string, auth: string, tag: string, department: string, location: string, signup: string };
 
   name: string;
   staffNumber: number;
@@ -29,6 +31,7 @@ export class ServerData {
   user_id: string;
   isActivated: boolean;
   isCheckedIn: boolean;
+  serverUrl: string = 'https://mtas.prasarana.com.my';
 
   submitted: boolean;
 
@@ -38,7 +41,7 @@ export class ServerData {
     // public appDataService: AppData,
     private appProfileService: AppProfile) {
     console.log('Hello ServerData Provider');
-    this.apiServer = { host: this.host, log: this.logUrl, auth: this.authUrl, tag: this.tagUrl, department: this.departmentUrl, location: this.locationUrl, signup: this.signUpUrl };
+    this.apiServer = { log: this.logUrl, auth: this.authUrl, tag: this.tagUrl, department: this.departmentUrl, location: this.locationUrl, signup: this.signUpUrl };
 
     this.appProfileService.getAppProfile();
 
@@ -51,52 +54,16 @@ export class ServerData {
     this.user_id = this.appProfileService.user_id;
     this.isActivated = this.appProfileService.isActivated;
     this.isCheckedIn = this.appProfileService.isCheckedIn;
-  }
+    // this.serverUrl = this.appProfileService.serverUrl;
 
-  getServerActivity(targetPath) {
-    let opt: RequestOptions
-    let myHeaders: Headers = new Headers
-    // myHeaders.set('Content-type', 'application/json');
-    myHeaders.set("Access-Control-Allow-Origin", "*");
-    // myHeaders.set("Access-Control-Allow-Credentials", "true");
-    myHeaders.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-    // myHeaders.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-    myHeaders.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  
-    opt = new RequestOptions({
-      headers: myHeaders
-    });
-    let path = this.apiServer.host + targetPath;
-    console.log('Path: ' + path);
-    this.http.get(path, opt)
-      .subscribe(res => {
-        this.activities = res.json();
-      }, (err) => {
-        console.log(err);
-      });
-  }
+    console.log('Server URL: ' + this.serverUrl);
 
-  postServerData(targetPath, data) {
-    let opt: RequestOptions
-    let myHeaders: Headers = new Headers
-    myHeaders.set('Content-type', 'application/json')
-    myHeaders.set("Access-Control-Allow-Origin", '*');
-    myHeaders.set('Access-Control-Allow-Methods', 'POST,GET,OPTIONS,PUT,DELETE');
-    myHeaders.set('Access-Control-Allow-Headers', 'Content-Type,Accept');
-    opt = new RequestOptions({
-      headers: myHeaders
-    })
-
-    data = JSON.stringify(data);
-    console.log('Data: ' + data);
-    let apiServerPath = this.apiServer.host + targetPath;
-    console.log('Server: ' + apiServerPath);
-    this.http.post(apiServerPath, data, opt)
-      .subscribe(res => {
-        console.log(res.json());
-      }, (err) => {
-        console.log(err);
-      });
+    this.myHeaders.set('Content-type', 'application/json');
+    this.myHeaders.set("Access-Control-Allow-Origin", "*");
+    this.myHeaders.set("Access-Control-Allow-Credentials", "true");
+    this.myHeaders.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    this.myHeaders.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+    // this.myHeaders.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   }
 
   public login(credentials) {
@@ -123,7 +90,7 @@ export class ServerData {
   getServerData(targetPath) {
     // let headers = new Headers();
     // headers.append('Content-Type', 'application/json');
-    this.http.get(this.apiServer.host + targetPath)
+    this.http.get(this.serverUrl + targetPath, this.opt)
       .subscribe(res => {
         let data = res.json();
         console.log('data: ' + data.user_id);
@@ -153,6 +120,25 @@ export class ServerData {
 
   }
 
+  getServerActivity(targetPath) {
+
+    this.opt = new RequestOptions({
+      headers: this.myHeaders
+    });
+    let path = this.serverUrl + targetPath;
+    console.log('Path: ' + path);
+    this.http.get(this.serverUrl + targetPath, this.opt)
+    // this.http.get(path, this.opt)
+      .subscribe(res => {
+        this.activities = res.json();
+        console.log(this.activities);
+      }, (err) => {
+        console.log('Error: ' + err);
+      });
+  }
+
+  
+
   public submitTags(direction: number, lat: number, long: number) {
 
     return Observable.create(observer => {
@@ -175,29 +161,14 @@ export class ServerData {
     }
   }
 
-  public submitTag2(direction: number, lat: number, long: number) {
-
-    if (direction === null || lat === null || long === null) {
-      return Observable.throw("Please insert data");
-    } else {
-      return Observable.create(observer => {
-        let data = { 'direction': direction, 'user_id': this.user_id, 'lat': lat, 'long': long };
-        // At this point make a request to your backend to make a real check!
-        this.postServerData(this.apiServer.log, data);
-        observer.next(true);
-        observer.complete();
-      });
-    }
-  }
-
   public submitTag(direction: number, lat: number, long: number) {
-    let apiServerPath = this.apiServer.host + this.apiServer.log
+    let apiServerPath = this.serverUrl+ this.apiServer.log
       + '?direction=' + direction
       + '&lat=' + lat
       + '&long=' + long
       + '&user_id=' + this.appProfileService.user_id;
     console.log('Server: ' + apiServerPath);
-    this.http.get(apiServerPath)
+    this.http.get(apiServerPath, this.opt)
       .subscribe(res => {
         let data = res.json();
         console.log('response:' + data.result);
@@ -220,7 +191,7 @@ export class ServerData {
     let targetPath = this.apiServer.tag
       + '?key=' + this.appProfileService.key
       + '&limit=' + limit;
-    let path = this.apiServer.host + targetPath;
+    let path = this.serverUrl + targetPath;
     console.log('Path: ' + path);
 
     this.http.get(path)

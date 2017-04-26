@@ -304,7 +304,7 @@ export class MapPage {
     } else {
       status = false;
     }
-    console.log('status: ' + status);
+    // console.log('status: ' + status);
     console.log('isActivated: ' + this.appProfileService.isActivated);
     return status;
   }
