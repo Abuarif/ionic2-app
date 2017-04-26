@@ -2,9 +2,10 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { ConnectivityService } from '../../providers/connectivity-service';
 import { Geolocation } from 'ionic-native';
-import { ProfilePage } from '../profile/profile';
+// import { ProfilePage } from '../profile/profile';
 import { ServerData } from '../../providers/server-data';
 import { AppProfile } from '../../providers/app-profile';
+import { SignUpPage } from '../sign-up/sign-up';
 
 declare var google;
 
@@ -59,12 +60,17 @@ export class MapPage {
     this.isActivated = this.appProfileService.isActivated;
     this.isCheckedIn = this.appProfileService.isCheckedIn;
 
+    if (this.isActivated == null || !this.isActivated ) {
+      this.activateFirst();
+    }
+
     this.loadGoogleMaps();
   }
 
   ionViewOnLoad() {
     console.log('ionViewWillEnter');
-    if (this.appProfileService.isActivated == null || !this.appProfileService.isActivated || this.appProfileService.name == null) {
+    if (this.isActivated == null || !this.isActivated ) {
+    // if (this.appProfileService.isActivated == null || !this.appProfileService.isActivated || this.appProfileService.name == null) {
       this.activateFirst();
     }
   }
@@ -78,7 +84,7 @@ export class MapPage {
           text: 'Ok',
           handler: () => {
             console.log('configure account ..');
-            this.navCtrl.push(ProfilePage);
+            this.navCtrl.push(SignUpPage);
           }
         }
       ]
