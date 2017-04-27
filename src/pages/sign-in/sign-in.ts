@@ -46,7 +46,7 @@ export class SignInPage {
           setTimeout(() => {
             this.loading.dismiss();
             this.navCtrl.setRoot(TabsPage);
-          });
+          }, 3000);
         } else {
           this.showError("Server is not accessible. Try again!");
         }
