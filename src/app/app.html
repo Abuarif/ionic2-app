@@ -8,7 +8,8 @@
     <ion-content>
         <ion-card class="card-ios">
             <ion-card-header>
-                <p>Salam HoRMAT {{ name }} ({{ staffNumber }}) </p>
+                <p>Salam HoRMAT</p>
+                <!--<p>Salam HoRMAT {{ name }} ({{ staffNumber }}) </p>-->
             </ion-card-header>
         </ion-card>
         <ion-list>
@@ -21,14 +22,14 @@
                 <p>{{p.title}}</p>
             </button>
 
-            <ion-list-header class="item-content">
+            <!--<ion-list-header class="item-content">
                 <ion-icon name="stats" item-left color="primary"></ion-icon>
                  Statistics
             </ion-list-header>
             <button menuClose ion-item *ngFor="let stat of stats" (click)="openPage(stat)">
                 <ion-icon [name]="stat.icon" light item-left></ion-icon>
                 <p>{{stat.title}}</p>
-            </button>
+            </button>-->
 
             <ion-list-header class="item-content">
                 <ion-icon name="lock" item-left color="primary"></ion-icon>
