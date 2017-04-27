@@ -41,7 +41,7 @@ export class ActivitiesPage {
           setTimeout(() => {
             this.loading.dismiss();
             this.services = this.serverDataService.activities;
-          });
+          }, 3000);
         } else {
           this.showError("Server is not accessible. Try again!");
         }
